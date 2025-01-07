@@ -5,6 +5,36 @@
   text-align: center;
 }
 
+.flex-cells {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 400px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: gray;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+  margin: 3px;
+
+}
+
+.item{
+  align-content: center;
+}
+
+.cell:hover {
+  background-color: lightgray;
+}
+.cell.removed {
+  visibility: hidden;
+}
 .logo {
   height: 6em;
   padding: 1.5em;

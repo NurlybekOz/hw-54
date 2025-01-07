@@ -1,35 +1,53 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import FlexCells from "./components/Field/Field.tsx";
+import ResetButton from "./components/Reset/Reset.tsx";
 
-function App() {
-  const [count, setCount] = useState(0)
 
+const App = () => {
+    const [count, setCount] = useState<number>(0);
+    const [cells, setCells] = useState(() => {
+        const CellsBox = [];
+        for (let i = 1; i <= 36; i++) {
+            CellsBox.push({hasItems: false, clicked: false});
+        }
+        const randomIndex = Math.floor(Math.random() * CellsBox.length);
+        CellsBox[randomIndex].hasItems = true;
+        return CellsBox;
+    });
+    const [gameOver, setGameOver] = useState<boolean>(false);
+   const deleteCell = (index: number) => {
+       if (gameOver) return;
+       const newCells = [...cells];
+       newCells[index].clicked = true;
+       if (newCells[index].hasItems) {
+           alert("Элемент найден!");
+           setGameOver(true);
+       }
+       setCells(newCells);
+       setCount((prevState) => prevState + 1);
+   }
+    const resetGame = () => {
+        const newCells = [];
+        for (let i = 1; i <= 36; i++) {
+            newCells.push({ hasItems: false, clicked: false });
+        }
+        const randomIndex = Math.floor(Math.random() * newCells.length);
+        newCells[randomIndex].hasItems = true;
+        setCells(newCells);
+        setCount(0)
+        setGameOver(false)
+    };
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+          <FlexCells cells={cells} onCellClick={deleteCell}/>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+            Tries: {count}
+        <br/>
+          <ResetButton onReset={resetGame}/>
+   </>
   )
-}
+};
 
 export default App
